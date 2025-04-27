@@ -39,12 +39,26 @@
     .data-section, .advice-section {
       margin-bottom: 20px;
     }
+    .form-section {
+      margin-bottom: 30px;
+    }
     footer {
       text-align: center;
       padding: 10px 0;
       background-color: #e0e0e0;
       font-size: 14px;
       color: #555;
+    }
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
@@ -59,21 +73,44 @@
     <p>Welcome to the Smart Soil Health Monitoring System designed for sustainable agriculture practices. Monitor soil conditions and get expert suggestions to improve crop productivity.</p>
   </section>
 
+  <!-- Form for input -->
+  <section class="form-section">
+    <h2>Enter Your Soil Conditions</h2>
+    <form>
+      <label for="moisture">Is the soil dry?</label><br>
+      <input type="radio" id="dry" name="moisture" value="dry"> Dry
+      <input type="radio" id="not_dry" name="moisture" value="not_dry"> Not Dry<br><br>
+
+      <label for="ph">Soil pH (or category):</label><br>
+      <input type="number" id="ph" name="ph" min="0" max="14"><br>
+      <span>OR</span><br>
+      <input type="radio" id="acidic" name="ph_category" value="acidic"> Acidic
+      <input type="radio" id="neutral" name="ph_category" value="neutral"> Neutral
+      <input type="radio" id="alkaline" name="ph_category" value="alkaline"> Alkaline<br><br>
+
+      <label for="temperature">Soil Temperature (°C):</label><br>
+      <input type="number" id="temperature" name="temperature" min="0" max="50"><br><br>
+
+      <input type="submit" value="Submit">
+    </form>
+  </section>
+
+  <!-- Display soil data and advice based on input -->
   <section class="data-section">
     <h2>Soil Data</h2>
     <ul>
-      <li><strong>Soil Moisture:</strong> 32%</li>
-      <li><strong>Soil pH:</strong> 5.8</li>
-      <li><strong>Temperature:</strong> 29°C</li>
+      <li><strong>Soil Moisture:</strong> <span id="soil-moisture">N/A</span></li>
+      <li><strong>Soil pH:</strong> <span id="soil-ph">N/A</span></li>
+      <li><strong>Temperature:</strong> <span id="soil-temp">N/A</span></li>
     </ul>
   </section>
 
   <section class="advice-section">
     <h2>Soil Health Advice</h2>
     <ul>
-      <li>Moisture is moderate. No immediate irrigation required.</li>
-      <li>pH is slightly acidic. Recommended to apply lime to balance soil pH.</li>
-      <li>Temperature is optimal for plant growth.</li>
+      <li><span id="moisture-advice">Please input moisture level for advice.</span></li>
+      <li><span id="ph-advice">Please input pH for advice.</span></li>
+      <li><span id="temp-advice">Please input temperature for advice.</span></li>
     </ul>
   </section>
 </main>
@@ -81,6 +118,35 @@
 <footer>
   © 2025 Smart Soil Health System
 </footer>
+
+<script>
+  // Form handling and advice based on user input
+  const form = document.querySelector('form');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Get form values
+    const moisture = document.querySelector('input[name="moisture"]:checked')?.value || 'N/A';
+    const ph = document.getElementById('ph').value || document.querySelector('input[name="ph_category"]:checked')?.value || 'N/A';
+    const temperature = document.getElementById('temperature').value || 'N/A';
+
+    // Display soil data
+    document.getElementById('soil-moisture').textContent = moisture;
+    document.getElementById('soil-ph').textContent = ph;
+    document.getElementById('soil-temp').textContent = temperature;
+
+    // Provide advice based on input
+    const moistureAdvice = (moisture === 'dry') ? 'Soil is dry, consider irrigating.' : 'Soil moisture is adequate, no irrigation needed.';
+    const phAdvice = (ph === 'acidic') ? 'pH is acidic, consider adding lime.' : (ph === 'neutral') ? 'pH is optimal for most crops.' : 'Soil is alkaline, consider adding sulfur.';
+    const tempAdvice = (temperature < 20) ? 'Temperature is too low, check if plants need warming.' :
+                       (temperature > 30) ? 'Temperature is high, ensure plants are shaded.' : 'Temperature is optimal for growth.';
+
+    // Display soil health advice
+    document.getElementById('moisture-advice').textContent = moistureAdvice;
+    document.getElementById('ph-advice').textContent = phAdvice;
+    document.getElementById('temp-advice').textContent = tempAdvice;
+  });
+</script>
 
 </body>
 </html>
