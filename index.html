@@ -36,11 +36,11 @@
       color: #4CAF50;
       margin-top: 0;
     }
-    .data-section, .advice-section {
-      margin-bottom: 20px;
-    }
     .form-section {
       margin-bottom: 30px;
+    }
+    .data-section, .advice-section {
+      margin-bottom: 20px;
     }
     footer {
       text-align: center;
@@ -81,15 +81,15 @@
       <input type="radio" id="dry" name="moisture" value="dry"> Dry
       <input type="radio" id="not_dry" name="moisture" value="not_dry"> Not Dry<br><br>
 
-      <label for="ph">Soil pH (or category):</label><br>
-      <input type="number" id="ph" name="ph" min="0" max="14"><br>
-      <span>OR</span><br>
+      <label for="ph">Soil pH (or condition based on plants):</label><br>
       <input type="radio" id="acidic" name="ph_category" value="acidic"> Acidic
       <input type="radio" id="neutral" name="ph_category" value="neutral"> Neutral
       <input type="radio" id="alkaline" name="ph_category" value="alkaline"> Alkaline<br><br>
 
-      <label for="temperature">Soil Temperature (°C):</label><br>
-      <input type="number" id="temperature" name="temperature" min="0" max="50"><br><br>
+      <label for="temperature">Soil Temperature (estimate):</label><br>
+      <input type="radio" id="cold" name="temperature" value="cold"> Cold
+      <input type="radio" id="ideal" name="temperature" value="ideal"> Ideal
+      <input type="radio" id="hot" name="temperature" value="hot"> Hot<br><br>
 
       <input type="submit" value="Submit">
     </form>
@@ -127,8 +127,8 @@
 
     // Get form values
     const moisture = document.querySelector('input[name="moisture"]:checked')?.value || 'N/A';
-    const ph = document.getElementById('ph').value || document.querySelector('input[name="ph_category"]:checked')?.value || 'N/A';
-    const temperature = document.getElementById('temperature').value || 'N/A';
+    const ph = document.querySelector('input[name="ph_category"]:checked')?.value || 'N/A';
+    const temperature = document.querySelector('input[name="temperature"]:checked')?.value || 'N/A';
 
     // Display soil data
     document.getElementById('soil-moisture').textContent = moisture;
@@ -138,8 +138,8 @@
     // Provide advice based on input
     const moistureAdvice = (moisture === 'dry') ? 'Soil is dry, consider irrigating.' : 'Soil moisture is adequate, no irrigation needed.';
     const phAdvice = (ph === 'acidic') ? 'pH is acidic, consider adding lime.' : (ph === 'neutral') ? 'pH is optimal for most crops.' : 'Soil is alkaline, consider adding sulfur.';
-    const tempAdvice = (temperature < 20) ? 'Temperature is too low, check if plants need warming.' :
-                       (temperature > 30) ? 'Temperature is high, ensure plants are shaded.' : 'Temperature is optimal for growth.';
+    const tempAdvice = (temperature === 'cold') ? 'Temperature is too low, check if plants need warming.' :
+                       (temperature === 'hot') ? 'Temperature is high, ensure plants are shaded.' : 'Temperature is optimal for growth.';
 
     // Display soil health advice
     document.getElementById('moisture-advice').textContent = moistureAdvice;
