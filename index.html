@@ -81,15 +81,25 @@
       <input type="radio" id="dry" name="moisture" value="dry"> Dry
       <input type="radio" id="not_dry" name="moisture" value="not_dry"> Not Dry<br><br>
 
-      <label for="ph">Soil pH (or condition based on plants):</label><br>
-      <input type="radio" id="acidic" name="ph_category" value="acidic"> Acidic
-      <input type="radio" id="neutral" name="ph_category" value="neutral"> Neutral
-      <input type="radio" id="alkaline" name="ph_category" value="alkaline"> Alkaline<br><br>
-
       <label for="temperature">Soil Temperature (estimate):</label><br>
       <input type="radio" id="cold" name="temperature" value="cold"> Cold
       <input type="radio" id="ideal" name="temperature" value="ideal"> Ideal
       <input type="radio" id="hot" name="temperature" value="hot"> Hot<br><br>
+
+      <label for="texture">Soil Texture:</label><br>
+      <input type="radio" id="clay" name="texture" value="clay"> Clay
+      <input type="radio" id="sandy" name="texture" value="sandy"> Sandy
+      <input type="radio" id="loamy" name="texture" value="loamy"> Loamy<br><br>
+
+      <label for="weather">Weather Condition:</label><br>
+      <input type="radio" id="sunny" name="weather" value="sunny"> Sunny
+      <input type="radio" id="cloudy" name="weather" value="cloudy"> Cloudy
+      <input type="radio" id="rainy" name="weather" value="rainy"> Rainy<br><br>
+
+      <label for="crop_health">Crop Health:</label><br>
+      <input type="radio" id="good" name="crop_health" value="good"> Good
+      <input type="radio" id="fair" name="crop_health" value="fair"> Fair
+      <input type="radio" id="poor" name="crop_health" value="poor"> Poor<br><br>
 
       <input type="submit" value="Submit">
     </form>
@@ -100,8 +110,10 @@
     <h2>Soil Data</h2>
     <ul>
       <li><strong>Soil Moisture:</strong> <span id="soil-moisture">N/A</span></li>
-      <li><strong>Soil pH:</strong> <span id="soil-ph">N/A</span></li>
       <li><strong>Temperature:</strong> <span id="soil-temp">N/A</span></li>
+      <li><strong>Soil Texture:</strong> <span id="soil-texture">N/A</span></li>
+      <li><strong>Weather Condition:</strong> <span id="weather-condition">N/A</span></li>
+      <li><strong>Crop Health:</strong> <span id="crop-health">N/A</span></li>
     </ul>
   </section>
 
@@ -109,8 +121,10 @@
     <h2>Soil Health Advice</h2>
     <ul>
       <li><span id="moisture-advice">Please input moisture level for advice.</span></li>
-      <li><span id="ph-advice">Please input pH for advice.</span></li>
       <li><span id="temp-advice">Please input temperature for advice.</span></li>
+      <li><span id="texture-advice">Please input texture for advice.</span></li>
+      <li><span id="weather-advice">Please input weather for advice.</span></li>
+      <li><span id="crop-advice">Please input crop health for advice.</span></li>
     </ul>
   </section>
 </main>
@@ -127,24 +141,35 @@
 
     // Get form values
     const moisture = document.querySelector('input[name="moisture"]:checked')?.value || 'N/A';
-    const ph = document.querySelector('input[name="ph_category"]:checked')?.value || 'N/A';
     const temperature = document.querySelector('input[name="temperature"]:checked')?.value || 'N/A';
+    const texture = document.querySelector('input[name="texture"]:checked')?.value || 'N/A';
+    const weather = document.querySelector('input[name="weather"]:checked')?.value || 'N/A';
+    const cropHealth = document.querySelector('input[name="crop_health"]:checked')?.value || 'N/A';
 
     // Display soil data
     document.getElementById('soil-moisture').textContent = moisture;
-    document.getElementById('soil-ph').textContent = ph;
     document.getElementById('soil-temp').textContent = temperature;
+    document.getElementById('soil-texture').textContent = texture;
+    document.getElementById('weather-condition').textContent = weather;
+    document.getElementById('crop-health').textContent = cropHealth;
 
     // Provide advice based on input
     const moistureAdvice = (moisture === 'dry') ? 'Soil is dry, consider irrigating.' : 'Soil moisture is adequate, no irrigation needed.';
-    const phAdvice = (ph === 'acidic') ? 'pH is acidic, consider adding lime.' : (ph === 'neutral') ? 'pH is optimal for most crops.' : 'Soil is alkaline, consider adding sulfur.';
     const tempAdvice = (temperature === 'cold') ? 'Temperature is too low, check if plants need warming.' :
                        (temperature === 'hot') ? 'Temperature is high, ensure plants are shaded.' : 'Temperature is optimal for growth.';
+    const textureAdvice = (texture === 'clay') ? 'Clay soil retains water, adjust irrigation accordingly.' :
+                          (texture === 'sandy') ? 'Sandy soil drains quickly, consider more frequent irrigation.' : 'Loamy soil is well-balanced for most crops.';
+    const weatherAdvice = (weather === 'rainy') ? 'Rainy weather, reduce irrigation to avoid overwatering.' :
+                          (weather === 'sunny') ? 'Sunny weather, check for signs of dehydration in plants.' : 'Cloudy weather, plants are under moderate stress.';
+    const cropAdvice = (cropHealth === 'poor') ? 'Crops are not healthy, check soil conditions and consider soil treatment.' :
+                       (cropHealth === 'fair') ? 'Crops are doing okay, monitor soil moisture and weather conditions.' : 'Crops are healthy, maintain optimal soil conditions.';
 
     // Display soil health advice
     document.getElementById('moisture-advice').textContent = moistureAdvice;
-    document.getElementById('ph-advice').textContent = phAdvice;
     document.getElementById('temp-advice').textContent = tempAdvice;
+    document.getElementById('texture-advice').textContent = textureAdvice;
+    document.getElementById('weather-advice').textContent = weatherAdvice;
+    document.getElementById('crop-advice').textContent = cropAdvice;
   });
 </script>
 
